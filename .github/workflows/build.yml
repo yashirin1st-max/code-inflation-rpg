@@ -1,0 +1,33 @@
+name: Build APK
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rename game file to main.py
+        run: |
+          ls -lh
+          cp "main (2).py" main.py || cp *.py main.py
+          ls -lh
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libtool automake autoconf pkg-config libffi-dev zlib1g-dev libltdl-dev openjdk-17-jdk unzip
+          pip install -q "pip==24.0" "buildozer==1.5.0" "cython==0.29.36"
+      - name: Build APK
+        run: |
+          yes | buildozer android debug || buildozer android debug
+          ls -lh bin/
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code-Inflation-RPG-APK
+          path: bin/*.apk
