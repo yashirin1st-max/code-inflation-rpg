@@ -13,7 +13,7 @@ android.minapi = 24
 android.ndk = 25b
 android.archs = arm64-v8a
 android.allow_backup = True
-p4a.branch = 2024.01.21
+p4a.branch = master
 [buildozer]
 log_level = 2
 warn_on_root = 0
